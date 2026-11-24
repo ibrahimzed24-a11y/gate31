@@ -1,5 +1,7 @@
 # Gate 31
 
+**Live:** https://gate31-jet.vercel.app · **Repo:** https://github.com/ibrahimzed24-a11y/gate31
+
 A cross-platform DJ application. Web-first PWA that runs in a browser on **macOS, Windows, iOS and Android**, with native wrappers (Electron / Capacitor) configured. Built on the Web Audio API — real decoding, mixing, EQ, effects and recording, no mock data.
 
 ## Features (v0.1)
@@ -81,6 +83,12 @@ supabase/        SQL schema
 scripts/         icon generator, deploy helper
 public/          PWA manifest, service worker, icons
 ```
+
+## Current deployment status
+- GitHub: pushed to `main` at `ibrahimzed24-a11y/gate31`, Vercel project linked for auto-deploy.
+- Vercel: production deployment live at `https://gate31-jet.vercel.app` (`vercel.json` rewrites + PWA headers).
+- Supabase: **not provisioned** — the CLI on this machine is not logged in and no project was linked. The app runs fully local without it; run `supabase/schema.sql` in your own project and add the two env vars to enable cloud metadata sync.
+- CI workflow: intentionally omitted from the repo because the available GitHub OAuth token lacks the `workflow` scope. To add it back: `gh auth refresh -s workflow`, restore `.github/workflows/ci.yml`, and remove `.github/workflows/` from `.gitignore`.
 
 ## Roadmap
 hot-cue memory loops · beat-grid & phrase sync · key detection / harmonic mixing · sampler pads · multi-deck · cloud audio storage with auth · MIDI controller mapping.
