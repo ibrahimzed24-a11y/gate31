@@ -1,15 +1,29 @@
 import { useEffect, useState } from 'react'
-import { Circle, Download, Radio, CloudOff } from 'lucide-react'
+import { Download, Radio, Circle } from 'lucide-react'
 import { getEngine } from './audio/AudioEngine'
 import { cloudEnabled } from './lib/supabase'
 import { DeckView } from './components/DeckView'
 import { Library } from './components/Library'
 import { Mixer } from './components/Mixer'
 
+type Theme = 'system' | 'light' | 'dark'
+
 export default function App() {
   const engine = getEngine()
   const [recording, setRecording] = useState(false)
   const [audioReady, setAudioReady] = useState(false)
+  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('g31-theme') as Theme) || 'system')
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const apply = () => {
+      document.documentElement.dataset.theme = theme === 'system' ? (mq.matches ? 'dark' : 'light') : theme
+    }
+    apply()
+    localStorage.setItem('g31-theme', theme)
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [theme])
 
   useEffect(() => {
     const unlock = () => { void engine.resume().then(() => setAudioReady(true)) }
@@ -47,17 +61,25 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <div className="brand-mark">31</div>
-          <div><h1>GATE 31</h1><span>DJ STUDIO</span></div>
+          <div className="eq-logo"><i /><i /><i /></div>
+          <div><h1>GATE <b>31</b></h1><span>DJ STUDIO</span></div>
         </div>
-        <div className="top-status">
-          <span className={`dot ${audioReady ? 'ok' : ''}`} /> {audioReady ? 'Audio ready' : 'Click anywhere to enable audio'}
-          {!cloudEnabled && <span className="cloud-note"><CloudOff size={13} /> Local mode</span>}
+        <div className="header-right">
+          <div className="status-pill pill">
+            <span className={`dot ${audioReady ? 'ok' : ''}`} />
+            {audioReady ? 'Audio ready' : 'Click to enable audio'}
+            {!cloudEnabled && ' · Local mode'}
+          </div>
+          <div className="theme-pill pill">
+            <span>Theme:</span>
+            {(['system', 'light', 'dark'] as Theme[]).map((t) => (
+              <button key={t} className={theme === t ? 'active' : ''} onClick={() => setTheme(t)}>{t}</button>
+            ))}
+          </div>
+          <button className={`record-pill ${recording ? 'active' : ''}`} onClick={() => void toggleRecord()}>
+            {recording ? <><Radio size={15} /> STOP &amp; SAVE <Download size={14} /></> : <><Circle size={14} /> RECORD MIX</>}
+          </button>
         </div>
-        <button className={`record ${recording ? 'active' : ''}`} onClick={() => void toggleRecord()}>
-          {recording ? <><Radio size={16} /> STOP &amp; SAVE</> : <><Circle size={15} /> RECORD MIX</>}
-          {recording && <Download size={14} />}
-        </button>
       </header>
 
       <main className="stage">
@@ -67,8 +89,7 @@ export default function App() {
       </main>
 
       <Library />
-
-      <footer className="footer">GATE 31 · v0.1.0 · Built with Web Audio · <span>Made for the booth</span></footer>
+      <footer className="footer">GATE 31 · v0.1.0 · WEB AUDIO ENGINE · MADE FOR THE BOOTH</footer>
     </div>
   )
 }

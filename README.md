@@ -4,6 +4,9 @@
 
 A cross-platform DJ application. Web-first PWA that runs in a browser on **macOS, Windows, iOS and Android**, with native wrappers (Electron / Capacitor) configured. Built on the Web Audio API — real decoding, mixing, EQ, effects and recording, no mock data.
 
+## Theme
+Soft neumorphic UI inspired by the GATE DJ reference: light slate (`#F0F4F8`) with cyan accent (`#29B6F6`), plus a dark slate variant (`#5F6F93`). Switch between System / Light / Dark in the header; choice persists in localStorage. Includes equalizer logo, recessed vinyl displays, segmented faders and recessed waveforms.
+
 ## Features (v0.1)
 - Two independent decks: load, play/pause, cue, seek (click waveform), nudge, BPM sync via playback rate
 - Real waveform rendering from decoded audio + live analyser VU meters

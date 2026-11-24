@@ -71,7 +71,7 @@ export function Library() {
               </div>
               <button className="load-btn a" onClick={() => loadToDeck(0, t.id)}>A</button>
               <button className="load-btn b" onClick={() => loadToDeck(1, t.id)}>B</button>
-              <button className="icon-btn danger" onClick={() => removeTrack(t.id)} title="Remove"><Trash2 size={14} /></button>
+              <button className="round-btn small-btn danger" onClick={() => removeTrack(t.id)} title="Remove"><Trash2 size={14} /></button>
             </div>
           ))}
         </div>
